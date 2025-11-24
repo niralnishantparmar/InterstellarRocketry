@@ -1,9 +1,874 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Interstellar Rocketry Team</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg-main: #050814;
+      --bg-alt: #0b1022;
+      --accent1: #00e5ff;
+      --accent2: #ff00c8;
+      --accent3: #6b5bff;
+      --text-main: #f5f5ff;
+      --text-muted: #b0b3c7;
+      --card-bg: #0f1328;
+    }
+
+    * {
+      box-sizing: border-box;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Montserrat", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #161b38 0, #050814 45%, #000000 100%);
+      color: var(--text-main);
+    }
+
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      backdrop-filter: blur(12px);
+      background: linear-gradient(90deg, rgba(0, 229, 255, 0.08), rgba(255, 0, 200, 0.1));
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .nav-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0.7rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .nav-logo {
+      width: 40px;
+      height: 40px;
+      border-radius: 999px;
+      object-fit: contain;
+    }
+
+    .nav-title {
+      font-family: "Orbitron", monospace;
+      font-size: 1.05rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    nav a {
+      color: var(--text-main);
+      text-decoration: none;
+      margin-left: 1.25rem;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      position: relative;
+    }
+
+    nav a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -0.25rem;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent1), var(--accent2));
+      transition: width 0.2s ease-out;
+    }
+
+    nav a:hover::after {
+      width: 100%;
+    }
+
+    main {
+      padding-top: 70px;
+    }
+
+    .hero {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 3.5rem 1.5rem 4rem;
+      display: grid;
+      grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+      gap: 2.5rem;
+      align-items: center;
+    }
+
+    .hero-text h1 {
+      font-family: "Orbitron", monospace;
+      font-size: clamp(2.2rem, 4vw, 3rem);
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      margin-bottom: 1rem;
+      background: linear-gradient(90deg, var(--accent1), var(--accent2));
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    .hero-text p {
+      max-width: 32rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+      font-size: 0.98rem;
+    }
+
+    .hero-badges {
+      margin: 1.5rem 0 2rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+    }
+
+    .badge {
+      border-radius: 999px;
+      padding: 0.3rem 0.9rem;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      background: radial-gradient(circle at top left, rgba(0, 229, 255, 0.18), rgba(255, 0, 200, 0.1));
+    }
+
+    .hero-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.9rem;
+    }
+
+    .btn {
+      border-radius: 999px;
+      padding: 0.8rem 1.5rem;
+      border: none;
+      cursor: pointer;
+      font-size: 0.9rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent1), var(--accent2));
+      color: #050814;
+      box-shadow: 0 0 22px rgba(0, 229, 255, 0.35);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--text-main);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .btn span.arrow {
+      font-size: 1rem;
+    }
+
+    .hero-visual {
+      display: flex;
+      justify-content: center;
+    }
+
+    .hero-card {
+      position: relative;
+      padding: 1.3rem 1.4rem 1.6rem;
+      border-radius: 1.4rem;
+      background: radial-gradient(circle at top, #1c2348, #050814);
+      box-shadow: 0 22px 60px rgba(0, 0, 0, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      text-align: center;
+      max-width: 320px;
+      width: 100%;
+    }
+
+    .hero-card img {
+      width: 70%;
+      max-width: 220px;
+      display: block;
+      margin: 0.5rem auto 0.8rem;
+    }
+
+    .hero-card h2 {
+      font-family: "Orbitron";
+      font-size: 1.15rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      margin-bottom: 0.4rem;
+    }
+
+    .hero-card p {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+    }
+
+    .pill {
+      font-size: 0.7rem;
+      padding: 0.35rem 0.9rem;
+      border-radius: 999px;
+      background: linear-gradient(90deg, rgba(0, 229, 255, 0.25), rgba(255, 0, 200, 0.25));
+      display: inline-block;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+
+    .hero-glow {
+      position: absolute;
+      inset: -2px;
+      border-radius: inherit;
+      background: conic-gradient(from 190deg, rgba(0, 229, 255, 0.4), rgba(255, 0, 200, 0.35), rgba(107, 91, 255, 0.5), rgba(0, 229, 255, 0.4));
+      opacity: 0.6;
+      filter: blur(26px);
+      z-index: -1;
+    }
+
+    section {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 2.5rem 1.5rem;
+    }
+
+    section h2 {
+      font-family: "Orbitron";
+      font-size: 1.3rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      margin-bottom: 1.2rem;
+    }
+
+    section h2 span {
+      background: linear-gradient(90deg, var(--accent1), var(--accent2));
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    .section-subtitle {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      max-width: 34rem;
+      margin-bottom: 1.8rem;
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+      gap: 2rem;
+    }
+
+    .about-card {
+      background: var(--card-bg);
+      border-radius: 1.1rem;
+      padding: 1.4rem 1.5rem;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+
+    .about-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    .about-list li {
+      margin-bottom: 0.7rem;
+      padding-left: 1.2rem;
+      position: relative;
+    }
+
+    .about-list li::before {
+      content: "✦";
+      position: absolute;
+      left: 0;
+      top: 0.05rem;
+      font-size: 0.8rem;
+      color: var(--accent1);
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 1.4rem;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: 1rem;
+      padding: 1.2rem 1.3rem 1.1rem;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .card h3 {
+      margin-top: 0;
+      font-size: 0.95rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 0.4rem;
+    }
+
+    .card .meta {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-bottom: 0.6rem;
+    }
+
+    .chip-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-top: 0.5rem;
+    }
+
+    .chip {
+      font-size: 0.7rem;
+      padding: 0.2rem 0.6rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      color: var(--text-muted);
+    }
+
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.4rem;
+    }
+
+    .member {
+      background: var(--card-bg);
+      border-radius: 1rem;
+      padding: 1rem 1.1rem 1.1rem;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .member h3 {
+      font-size: 0.95rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      margin: 0 0 0.2rem;
+    }
+
+    .role {
+      font-size: 0.8rem;
+      color: var(--accent1);
+      margin-bottom: 0.4rem;
+    }
+
+    .member p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 0.4rem;
+    }
+
+    .join-section {
+      background: radial-gradient(circle at top, #151b3a, #060917);
+      border-radius: 1.3rem;
+      padding: 1.8rem 1.7rem 1.6rem;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      margin-top: 1rem;
+    }
+
+    .join-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+      gap: 1.7rem;
+      align-items: center;
+    }
+
+    form {
+      display: grid;
+      gap: 0.8rem;
+    }
+
+    label {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-muted);
+    }
+
+    input,
+    textarea,
+    select {
+      width: 100%;
+      border-radius: 0.6rem;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 0.6rem 0.7rem;
+      font-size: 0.9rem;
+      background: rgba(5, 8, 20, 0.95);
+      color: var(--text-main);
+      font-family: inherit;
+    }
+
+    textarea {
+      min-height: 90px;
+      resize: vertical;
+    }
+
+    input:focus,
+    textarea:focus,
+    select:focus {
+      outline: 2px solid rgba(0, 229, 255, 0.7);
+      outline-offset: 1px;
+    }
+
+    .contact-alt {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .contact-alt b {
+      color: var(--accent2);
+      font-weight: 600;
+    }
+
+    footer {
+      padding: 1.2rem 1.5rem 1.4rem;
+      text-align: center;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      background: #050814;
+      margin-top: 2rem;
+    }
+
+    footer span.brand {
+      color: var(--accent1);
+      font-family: "Orbitron";
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    /* Sponsor section styles */
+    .sponsor-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+      gap: 1.6rem;
+      align-items: stretch;
+    }
+
+    .sponsor-card {
+      background: var(--card-bg);
+      border-radius: 1.1rem;
+      padding: 1.4rem 1.5rem;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+
+    .tier-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      font-size: 0.88rem;
+    }
+
+    .tier-list li {
+      margin-bottom: 0.9rem;
+      padding-left: 1.2rem;
+      position: relative;
+    }
+
+    .tier-list li::before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      top: 0;
+      color: var(--accent2);
+    }
+
+    .tier-name {
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .sponsor-highlight {
+      background: radial-gradient(circle at top, rgba(0, 229, 255, 0.2), rgba(255, 0, 200, 0.12));
+      border-radius: 1.1rem;
+      padding: 1.4rem 1.5rem;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      font-size: 0.88rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+    }
+
+    .sponsor-highlight b {
+      color: var(--accent1);
+    }
+
+    .sponsor-cta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin-top: 0.4rem;
+    }
+
+    .sponsor-email {
+      font-family: "Orbitron";
+      font-size: 0.8rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    @media (max-width: 780px) {
+      .hero {
+        grid-template-columns: minmax(0, 1fr);
+        padding-top: 2.6rem;
+      }
+
+      .hero-visual {
+        order: -1;
+      }
+
+      .about-grid,
+      .join-grid,
+      .sponsor-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      nav a {
+        margin-left: 0.8rem;
+        font-size: 0.75rem;
+      }
+
+      .nav-inner {
+        padding-inline: 1rem;
+      }
+    }
+  </style>
+</head>
 <body>
+  <header>
+    <div class="nav-inner">
+      <div class="nav-left">
+        <!-- Replace src with your actual logo path -->
+        <img src="images/interstellar-logo.png" alt="Interstellar Rocketry Logo" class="nav-logo" />
+        <div class="nav-title">Interstellar Rocketry</div>
+      </div>
+      <nav>
+        <a href="#about">About</a>
+        <a href="#missions">Missions</a>
+        <a href="#team">Team</a>
+        <a href="#sponsor">Sponsor</a>
+        <a href="#join">Join</a>
+      </nav>
+    </div>
+  </header>
 
-<h1>hh</h1>
-<p>h</p>
+  <main>
+    <!-- HERO -->
+    <section class="hero" id="top">
+      <div class="hero-text">
+        <h1>Interstellar Rocketry Team</h1>
+        <p>
+          We design, build, and launch high-powered rockets that push the edge of what students can create.
+          From CAD to countdown, every mission is engineered and flown by our team.
+        </p>
+        <div class="hero-badges">
+          <div class="badge">High-Power Certification</div>
+          <div class="badge">Avionics &amp; Flight Software</div>
+          <div class="badge">Competition Ready</div>
+        </div>
+        <div class="hero-buttons">
+          <a class="btn btn-primary" href="#join">
+            Join the Next Launch <span class="arrow">↗</span>
+          </a>
+          <a class="btn btn-secondary" href="#missions">
+            View Missions
+          </a>
+        </div>
+      </div>
 
+      <div class="hero-visual">
+        <div class="hero-card">
+          <div class="hero-glow"></div>
+          <img src="images/interstellar-logo.png" alt="Interstellar Rocketry Logo" />
+          <h2>Launch Window 2026</h2>
+          <p>
+            Target apogee: <b>10,000 ft AGL</b><br />
+            Vehicle: <b>INT-X Aurora</b><br />
+            Pad: <b>Range 3, West Field</b>
+          </p>
+          <span class="pill">Next Flight in Preparation</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about">
+      <h2><span>About</span> the Team</h2>
+      <p class="section-subtitle">
+        Interstellar Rocketry is a student-run team focused on safe, ambitious rocketry.
+        We combine engineering rigor with hands-on building to bring big ideas off the drawing board and into the sky.
+      </p>
+
+      <div class="about-grid">
+        <div class="about-card">
+          <p>
+            Our members span mechanical, electrical, computer science, and physics backgrounds.
+            We design every subsystem in-house: structures, propulsion integration, avionics, recovery, and ground support.
+          </p>
+          <p>
+            Each season, we pursue a flagship mission, develop experimental payloads, and mentor new members through
+            a structured onboarding program that covers rocketry fundamentals and shop safety.
+          </p>
+        </div>
+        <div>
+          <ul class="about-list">
+            <li><b>Mission:</b> Build reliable rockets that reach new altitudes while staying within strict safety standards.</li>
+            <li><b>Focus Areas:</b> Airframe design, propulsion integration, flight computers, telemetry, and recovery systems.</li>
+            <li><b>Where We Fly:</b> Regional high-power ranges and national student competitions.</li>
+            <li><b>Who Can Join:</b> All majors and experience levels—no prior rocketry experience required.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- MISSIONS -->
+    <section id="missions">
+      <h2><span>Missions</span> &amp; Projects</h2>
+      <p class="section-subtitle">
+        Every rocket is a full engineering project: requirements, design reviews, simulations, manufacturing, and flight testing.
+        Here are some of our recent and upcoming missions.
+      </p>
+
+      <div class="card-grid">
+        <article class="card">
+          <h3>INT-X Aurora</h3>
+          <div class="meta">10k ft Target &middot; Dual-Deploy Recovery</div>
+          <p>
+            Composite airframe, GPS-enabled avionics bay, and redundant altimeters. Aurora is our competition workhorse for 10k-foot missions.
+          </p>
+          <div class="chip-row">
+            <span class="chip">OpenRocket / RASAero</span>
+            <span class="chip">Dual-Deploy</span>
+            <span class="chip">Telemetry</span>
+          </div>
+        </article>
+
+        <article class="card">
+          <h3>Starlight Payload</h3>
+          <div class="meta">Experimental &middot; Microgravity Sensing</div>
+          <p>
+            A modular payload bay featuring IMU sensors, micro-camera, and environmental logging,
+            designed to gather data throughout powered ascent and descent.
+          </p>
+          <div class="chip-row">
+            <span class="chip">IMU</span>
+            <span class="chip">Data Logging</span>
+            <span class="chip">Python Analysis</span>
+          </div>
+        </article>
+
+        <article class="card">
+          <h3>Launch Control Rev-2</h3>
+          <div class="meta">Ground Systems &middot; Safety Focused</div>
+          <p>
+            Custom launch control system with arming interlocks, pad status indicators, and integrated range safety checklist support.
+          </p>
+          <div class="chip-row">
+            <span class="chip">Ground Support</span>
+            <span class="chip">Electronics</span>
+            <span class="chip">Safety</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- TEAM -->
+    <section id="team">
+      <h2><span>Team</span> Structure</h2>
+      <p class="section-subtitle">
+        We organize into subteams so everyone can specialize while still understanding the full vehicle.
+        Leaders coordinate design reviews and integration between subsystems.
+      </p>
+
+      <div class="team-grid">
+        <div class="member">
+          <h3>Mission Control</h3>
+          <div class="role">Leadership &amp; Systems Engineering</div>
+          <p>
+            Sets mission goals, manages timelines, and ensures each subsystem integrates into a reliable flight vehicle.
+          </p>
+          <p><b>Example roles:</b> project lead, safety officer, operations lead.</p>
+        </div>
+
+        <div class="member">
+          <h3>Propulsion &amp; Airframe</h3>
+          <div class="role">Structures &amp; Flight Dynamics</div>
+          <p>
+            Designs the rocket airframe, motor mount, and recovery hardware, and runs simulations to predict thrust,
+            stability, and altitude.
+          </p>
+          <p><b>Tools:</b> CAD, FEA, OpenRocket.</p>
+        </div>
+
+        <div class="member">
+          <h3>Avionics</h3>
+          <div class="role">Electronics &amp; Software</div>
+          <p>
+            Builds the flight computer stack: altimeters, sensors, GPS, and telemetry links. Develops firmware and flight-data tools.
+          </p>
+          <p><b>Stack:</b> microcontrollers, embedded C, Python, RF.</p>
+        </div>
+
+        <div class="member">
+          <h3>Outreach</h3>
+          <div class="role">Media &amp; Education</div>
+          <p>
+            Shares our work at events, manages social media, and runs workshops that introduce new members to rocketry.
+          </p>
+          <p><b>Focus:</b> STEM demos, design nights, launch recaps.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SPONSOR US -->
+    <section id="sponsor">
+      <h2><span>Sponsor</span> Us</h2>
+      <p class="section-subtitle">
+        Interstellar Rocketry is fueled by the support of companies and individuals who believe in hands-on STEM education.
+        Your sponsorship turns student designs into real vehicles on the launch pad.
+      </p>
+
+      <div class="sponsor-grid">
+        <div class="sponsor-card">
+          <p>
+            Sponsorships help us cover motors, airframe materials, avionics hardware, safety equipment, and competition travel.
+            In return, we highlight our partners across our rockets, flight suits, outreach events, and digital channels.
+          </p>
+          <ul class="tier-list">
+            <li>
+              <span class="tier-name">Orbital Partner</span><br />
+              Logo on primary rocket airframe, prominent placement on team shirts and website, shout-outs in launch videos and outreach events.
+            </li>
+            <li>
+              <span class="tier-name">Flight Partner</span><br />
+              Logo on payload bay or fins, recognition on social media, and inclusion in launch-day signage and recap materials.
+            </li>
+            <li>
+              <span class="tier-name">Ground Support Partner</span><br />
+              Logo on our website and posters, plus acknowledgment at meetings and demos where your support is used.
+            </li>
+          </ul>
+        </div>
+
+        <div class="sponsor-highlight">
+          <div>
+            <b>What sponsors receive:</b><br />
+            • Authentic engineering exposure and recruitment pipeline to hands-on builders<br />
+            • Brand visibility at launches, competitions, and outreach events<br />
+            • A summary report after each flight with photos and technical highlights
+          </div>
+          <div>
+            <b>How to get started:</b>
+            <div class="sponsor-cta">
+              <a class="btn btn-primary" href="#join">Contact the Team</a>
+              <a class="btn btn-secondary" href="#" onclick="alert('You can link this button to a PDF sponsor packet when it is ready.'); return false;">
+                Download Sponsor Packet
+              </a>
+            </div>
+          </div>
+          <div class="sponsor-email">
+            sponsor &middot; interstellar.rocketry@example.edu
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- JOIN -->
+    <section id="join">
+      <h2><span>Join</span> the Team</h2>
+      <p class="section-subtitle">
+        Whether you love CAD, circuits, coding, or simply watching rockets leave the pad,
+        there’s a place for you on Interstellar Rocketry. Tell us a bit about yourself and we’ll reach out.
+      </p>
+
+      <div class="join-section">
+        <div class="join-grid">
+          <form>
+            <div>
+              <label for="name">Name</label>
+              <input id="name" name="name" type="text" placeholder="Your name" required />
+            </div>
+            <div>
+              <label for="email">Email</label>
+              <input id="email" name="email" type="email" placeholder="you@example.com" required />
+            </div>
+            <div>
+              <label for="interest">Area of Interest</label>
+              <select id="interest" name="interest">
+                <option>Propulsion &amp; Airframe</option>
+                <option>Avionics &amp; Software</option>
+                <option>Payloads &amp; Data</option>
+                <option>Ground Systems</option>
+                <option>Media &amp; Outreach</option>
+                <option>Just Exploring</option>
+              </select>
+            </div>
+            <div>
+              <label for="message">Tell us more</label>
+              <textarea id="message" name="message" placeholder="What would you like to work on?"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">
+              Submit Interest
+            </button>
+          </form>
+
+          <div class="contact-alt">
+            <p>
+              Prefer email? Reach us at<br />
+              <b>interstellar.rocketry@example.edu</b>
+            </p>
+            <p>
+              We typically host open meetings once a week during the semester and schedule build sessions in the lab on evenings and weekends.
+            </p>
+            <p>
+              Follow our launches, test days, and design updates on social media &mdash; or come out to the range and watch a rocket break the sky.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div>
+      <span class="brand">Interstellar</span> Rocketry Team &middot; Reach for the next apogee.
+    </div>
+  </footer>
+
+  <script>
+    document.querySelectorAll('a[href^="#"]').forEach(function (link) {
+      link.addEventListener("click", function (e) {
+        const targetId = this.getAttribute("href").substring(1);
+        const target = document.getElementById(targetId);
+        if (target) {
+          e.preventDefault();
+          target.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      });
+    });
+  </script>
 </body>
 </html>
